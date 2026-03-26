@@ -1,10 +1,13 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Rocket, Menu, X, ChevronDown, ChevronRight, Check, Minus,
   Globe, Database, Clock, Cpu, Package, Server, HardDrive, GitBranch,
   Zap, Shield, Bird, Code2, MessageCircle, Star, Plus,
   ArrowRight, Play, Cloud, Lock, BarChart3, Users, Settings,
-  Terminal, Layers, RefreshCw, CheckCircle, XCircle, Activity
+  Terminal, Layers, RefreshCw, CheckCircle, XCircle, Activity,
+  Eye, EyeOff, Download, Search, Trash2, Copy, Bell, Command,
+  ChevronUp, LogOut, CreditCard, Sliders, AlertTriangle, MoreHorizontal,
+  ExternalLink, RotateCcw, Filter, SortAsc, Edit2, Info
 } from 'lucide-react'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -245,7 +248,7 @@ function TerminalWindow({ lines, title = 'terminal' }) {
 
 // ─── Hero ──────────────────────────────────────────────────────────────────────
 
-function HeroSection() {
+function HeroSection({ onGetStarted }) {
   return (
     <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
@@ -292,6 +295,7 @@ function HeroSection() {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
+              onClick={onGetStarted}
               className="btn-glow font-semibold px-8 py-4 rounded-xl text-white text-base flex items-center gap-2"
               style={{ background: 'linear-gradient(135deg, #6d4aff, #8b6dff)' }}
             >
@@ -741,7 +745,7 @@ const DB_PLANS = [
   { name: 'Business DB', price: 185, storage: '256 GB', ram: '16 GB' },
 ]
 
-function PricingSection() {
+function PricingSection({ onContactSales }) {
   const [annual, setAnnual] = useState(false)
   const ref = useRef(null)
   const inView = useInView(ref, '-100px')
@@ -961,6 +965,7 @@ function PricingSection() {
               ))}
             </ul>
             <button
+              onClick={onContactSales}
               className="w-full py-3 rounded-xl font-semibold text-sm btn-glow text-white"
               style={{ background: 'linear-gradient(135deg, #6d4aff, #8b6dff)' }}
             >
@@ -1301,7 +1306,7 @@ function FAQItem({ item, isOpen, onToggle, index }) {
 
 // ─── CTA Banner ────────────────────────────────────────────────────────────────
 
-function CTABanner() {
+function CTABanner({ onGetStarted, onContactSales }) {
   const ref = useRef(null)
   const inView = useInView(ref, '-100px')
 
@@ -1343,12 +1348,14 @@ function CTABanner() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
+            onClick={onGetStarted}
             className="font-bold px-10 py-4 rounded-xl text-base transition-all duration-200 hover:scale-105"
             style={{ background: '#fff', color: '#6d4aff' }}
           >
             Start for Free
           </button>
           <button
+            onClick={onContactSales}
             className="font-semibold px-8 py-4 rounded-xl text-base text-white"
             style={{ border: '1px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)' }}
           >
@@ -1365,7 +1372,7 @@ function CTABanner() {
 
 // ─── Footer ────────────────────────────────────────────────────────────────────
 
-function Footer() {
+function Footer({ onStatus, onContactSales }) {
   const cols = [
     {
       heading: 'Products',
@@ -1439,6 +1446,11 @@ function Footer() {
                       href="#"
                       className="text-sm transition-colors duration-200"
                       style={{ color: '#555577' }}
+                      onClick={e => {
+                        e.preventDefault()
+                        if (link === 'Status' && onStatus) onStatus()
+                        if (link === 'Contact' && onContactSales) onContactSales()
+                      }}
                       onMouseEnter={e => (e.target.style.color = '#8888aa')}
                       onMouseLeave={e => (e.target.style.color = '#555577')}
                     >
